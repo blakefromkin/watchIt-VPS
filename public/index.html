@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>WatchIt</title>
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <script src="/javascripts/handlebars.js"></script>
+  <script id="movieListTemplate" type="text/x-handlebars">
+    <ul>
+      {{#each movies}}
+      <li data-groupid="{{groupId}}" data-movieid="{{id}}" class="movie {{watched}}">
+        <p>{{title}} - {{formattedGroupId}}</p>
+        <img src="/images/trash-can.png"/ class="trash">
+      </li>
+      {{/each}}
+    </ul>
+  </script>
+  <script src="/javascripts/app.js"></script>
+</head>
+<body>
+  <nav>
+    <div id="all-todos">
+      <h1 id="all-todos-title" class="selected">All Todos <span class="count" id="all-count"></span></h1>
+    </div>
+    <div id="completed-todos">
+      <h1 id="completed-todos-title">Completed <span class="count" id="completed-count"></span></h1>
+    </div>
+  </nav>
+  <main>
+    <div id="group-title">
+      <h1><span id="title-text">All Todos</span> <span class="count" id="title-count"></span></h1>
+    </div>
+    <a href="" id="add-todo">+ Add new todo</a>
+    <div id="todo-list"></div>
+  </main>
+  <div id="modal-page" class="hidden">
+    <form action="" method="post" id="modal">
+      <label for="title">Title</label>
+      <input type="text" name="title" id="title" placeholder="Item 1"/>
+      <br>
+      <label for="day">Due Date</label>
+      <select name="day" id="day">
+        <option value="" selected>Day</option>
+      </select>
+      <label for="month">/</label>
+      <select name="month" id="month">
+        <option value="" selected>Month</option>
+      </select>
+      <label for="year">/</label>
+      <select name="year" id="year">
+        <option value="" selected>Year</option>
+      </select>
+      <br>
+      <label for="description">Description</label>
+      <textarea name="description" id="description" placeholder="Description"></textarea>
+      <br>
+      <button class="modal-button" id="save">Save</button>
+      <button class="modal-button" id="mark-complete">Mark As Complete</button>
+    </form>
+  </div>
+</body>
+</html>

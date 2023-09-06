@@ -54,6 +54,13 @@ function isValidMovie(movie) {
   );
 }
 
+function formatMovie(movie) {
+  if (!movie.genre) movie.genre = '';
+  if (!movie.year) movie.year = '';
+  if (!movie.notes) movie.notes = '';
+  return movie;
+}
+
 app.get("/", (req, res) => {
   res.redirect("/movies");
 });
@@ -103,6 +110,7 @@ app.post("/signout", (req, res) => {
 app.get("/movies/data", requiresAuthentication, 
   catchError(async (req, res) => {
     let movies = await res.locals.store.allMovies();
+    movies = movies.map(formatMovie);
     res.json(movies);
 }));
 
