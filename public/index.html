@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>WatchIt</title>
-  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <link rel="stylesheet" href="/stylesheets/index.css" />
   <script src="/javascripts/handlebars.js"></script>
   <script id="movieListTemplate" type="text/x-handlebars">
     <ul>
       {{#each movies}}
-      <li data-groupid="{{groupId}}" data-movieid="{{id}}" class="movie {{watched}}">
-        <p>{{title}} - {{formattedGroupId}}</p>
+      <li data-genre="{{genre}}" data-movieid="{{id}}" class="movie {{watched}}">
+        <p>{{title}} - {{year}}</p>
         <img src="/images/trash-can.png"/ class="trash">
       </li>
       {{/each}}
@@ -19,45 +19,45 @@
   </script>
   <script src="/javascripts/app.js"></script>
 </head>
+<header>
+  <h1 id="site-title">WatchIt</h1>
+  <button id="sign-out-button">Sign Out</button>
+</header>
 <body>
   <nav>
-    <div id="all-todos">
-      <h1 id="all-todos-title" class="selected">All Todos <span class="count" id="all-count"></span></h1>
+    <div id="all-movies">
+      <h1 id="all-movies-title" class="selected">All Movies <span class="count" id="all-count"></span></h1>
     </div>
-    <div id="completed-todos">
-      <h1 id="completed-todos-title">Completed <span class="count" id="completed-count"></span></h1>
+    <div id="watched-movies">
+      <h1 id="watched-movies-title">Watched Movies<span class="count" id="watched-count"></span></h1>
     </div>
   </nav>
   <main>
-    <div id="group-title">
-      <h1><span id="title-text">All Todos</span> <span class="count" id="title-count"></span></h1>
+    <div id="genre-title">
+      <h1><span id="title-text">All Movies</span> <span class="count" id="title-count"></span></h1>
     </div>
-    <a href="" id="add-todo">+ Add new todo</a>
-    <div id="todo-list"></div>
+    <a href="" id="add-movie">+ Add new movie</a>
+    <div id="movie-list"></div>
   </main>
   <div id="modal-page" class="hidden">
     <form action="" method="post" id="modal">
       <label for="title">Title</label>
-      <input type="text" name="title" id="title" placeholder="Item 1"/>
+      <input type="text" name="title" id="title" placeholder="Ex: Titanic"/>
       <br>
-      <label for="day">Due Date</label>
-      <select name="day" id="day">
-        <option value="" selected>Day</option>
-      </select>
-      <label for="month">/</label>
-      <select name="month" id="month">
-        <option value="" selected>Month</option>
-      </select>
-      <label for="year">/</label>
+      <label for="year">Details</label>
       <select name="year" id="year">
         <option value="" selected>Year</option>
       </select>
+      <label for="genre">/</label>
+      <select name="genre" id="genre">
+        <option value="" selected>Genre</option>
+      </select>
       <br>
-      <label for="description">Description</label>
-      <textarea name="description" id="description" placeholder="Description"></textarea>
+      <label for="notes">Notes</label>
+      <textarea name="notes" id="notes" placeholder="Notes here."></textarea>
       <br>
       <button class="modal-button" id="save">Save</button>
-      <button class="modal-button" id="mark-complete">Mark As Complete</button>
+      <button class="modal-button" id="mark-watched">Mark As Watched</button>
     </form>
   </div>
 </body>
