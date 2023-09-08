@@ -19,26 +19,28 @@
   </script>
   <script src="/javascripts/app.js"></script>
 </head>
-<header>
-  <h1 id="site-title">WatchIt</h1>
-  <button id="sign-out-button">Sign Out</button>
-</header>
 <body>
-  <nav>
-    <div id="all-movies">
-      <h1 id="all-movies-title" class="selected">All Movies <span class="count" id="all-count"></span></h1>
-    </div>
-    <div id="watched-movies">
-      <h1 id="watched-movies-title">Watched Movies<span class="count" id="watched-count"></span></h1>
-    </div>
-  </nav>
-  <main>
-    <div id="genre-title">
-      <h1><span id="title-text">All Movies</span> <span class="count" id="title-count"></span></h1>
-    </div>
-    <a href="" id="add-movie">+ Add new movie</a>
-    <div id="movie-list"></div>
-  </main>
+  <header>
+    <h1 id="site-title">WatchIt</h1>
+    <button id="sign-out-button">Sign Out</button>
+  </header>
+  <div id="flex-container">
+    <nav>
+      <div id="all-movies">
+        <h1 id="all-movies-title" class="selected">All Movies <span class="count" id="all-count"></span></h1>
+      </div>
+      <div id="watched-movies">
+        <h1 id="watched-movies-title">Watched Movies<span class="count" id="watched-count"></span></h1>
+      </div>
+    </nav>
+    <main>
+      <div id="genre-title">
+        <h1><span id="title-text">All Movies</span> <span class="count" id="title-count"></span></h1>
+      </div>
+      <a href="" id="add-movie">+ Add new movie</a>
+      <div id="movie-list"></div>
+    </main>
+  </div>
   <div id="modal-page" class="hidden">
     <form action="" method="post" id="modal">
       <label for="title">Title</label>
@@ -56,8 +58,8 @@
       <label for="notes">Notes</label>
       <textarea name="notes" id="notes" placeholder="Notes here."></textarea>
       <br>
-      <button class="modal-button" id="save">Save</button>
-      <button class="modal-button" id="mark-watched">Mark As Watched</button>
+      <button type="button" class="modal-button" id="save">Save</button>
+      <button type="button" class="modal-button" id="mark-watched">Mark As Watched</button>
     </form>
   </div>
 </body>
