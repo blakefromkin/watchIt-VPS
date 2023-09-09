@@ -106,12 +106,17 @@ app.post("/signout", (req, res) => {
   res.redirect("/signin");
 });
 
+// Sends current username string
+app.get("/user", requiresAuthentication,
+  (req, res) => res.status(200).send(res.locals.username)
+);
+
 // Sends all movie data for the signed-in user in JSON format
 app.get("/movies/data", requiresAuthentication, 
   catchError(async (req, res) => {
     let movies = await res.locals.store.allMovies();
     movies = movies.map(formatMovie);
-    res.json(movies);
+    res.status(200).json(movies);
 }));
 
 // Adds a new movie
