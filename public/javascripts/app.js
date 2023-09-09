@@ -465,7 +465,7 @@ class Controller {
     this.view.saveButton.addEventListener("click", async e => {
       e.preventDefault();
       if (this.view.title.value.trim().length < 1) {
-        window.alert("Title must be at least 1 character.");
+        window.alert("Title must be at least 1 character long.");
         return;
       }
 
@@ -524,9 +524,102 @@ class Controller {
     let data = {
       title: this.view.title.value,
       year: this.view.yearSelect.value,
+      genre: this.view.genreSelect.value,
       notes: this.view.notes.value,
-      watched: false
+      watched: false,
+      username: this.model.username
     };
-    await this.model.addTodo(data);
+    
+    await this.model.addMovie(data);
+  }
+
+  // Submit edited movie using form data
+  async submitEditedMovie() {
+    let movie = this.model.getMovieById(this.currentMovieId);
+    let data = {
+      title: this.view.title.value,
+      year: this.view.yearSelect.value,
+      genre: this.view.genreSelect.value,
+      notes: this.view.notes.value,
+      watched: movie.watched,
+      username: this.model.username
+    };
+    await this.model.editMovie(data, movie.id);
+  }
+
+  // Bind handler for toggling watched status when movie area is clicked
+  bindToggleWatchedHandler() {
+    this.view.movieListDiv.addEventListener("click", async e => {
+      e.preventDefault();
+
+      if (e.target.matches('li.movie')) {
+        this.currentMovieId = e.target.getAttribute("data-movieid");
+        let movie = this.model.getMovieById(this.currentMovieId);
+        movie.watched = !movie.watched;
+        await this.model.editMovie(movie, movie.id);
+
+        this.currentMovieId = null;
+        this.preserveSelectedAndRefresh();
+      }
+    });
+  }
+
+  // Preserve the current selected nav element and refresh page
+  preserveSelectedAndRefresh() {
+    let genre = this.currentNavSelect.getAttribute("data-genre");
+    this.refreshAfterUpdate();
+
+    if (genre && !this.watchedListSelected) {     // An "All Movies" genre is currently selected
+      let element = document.querySelector(`#all-movies li[data-genre="${genre}"]`);
+      if (element) {
+        this.view.selectNavElement(element);
+        this.currentNavSelect = element;
+      } else this.currentNavSelect = null;
+    } else if (genre && this.watchedListSelected) { // A "Watched Movies" genre is currently selected
+      let element = document.querySelector(`#watched-movies li[data-genre="${genre}"]`);
+      if (element) {
+        this.view.selectNavElement(element);
+        this.currentNavSelect = element;
+      } else this.currentNavSelect = null;
+    }
+  }
+
+  // Refresh page based on current controller variable values
+  refreshAfterUpdate() {
+    if (this.currentListId === "all") {
+      this.renderAllMoviesList();
+      this.populateNav();
+      this.updateTitleCount();
+    } else if (this.currentListId === "watched") {
+      this.renderWatchedMoviesList();
+      this.populateNav();
+      this.updateTitleCount();
+    } else if (this.watchedListSelected) {
+      this.renderWatchedGenreList(this.currentListId);
+      this.populateNav();
+      this.updateTitleCount();
+    } else {
+      this.renderAllGenreList(this.currentListId);
+      this.populateNav();
+      this.updateTitleCount();
+    }
+  } 
+  
+  // Render nav with appropriate values
+  populateNav() {
+    this.updateAllMoviesCount();
+    this.updateWatchedMoviesCount();
+
+    this.view.renderNavAllMovies(this.model.genres);
+    this.view.renderNavWatchedMovies(this.model.watchedGenres);
   }
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+  let model = new Model();
+  await model.refreshMovies();
+  await model.refreshUsername();
+  let view = new View();
+  
+  new Controller(model, view);
+});

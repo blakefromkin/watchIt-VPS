@@ -49,8 +49,7 @@ function isValidMovie(movie) {
     movie.year.length === 4 &&
     movie.genre && movie.username &&
     movie.notes !== undefined &&
-    movie.watched !== undefined &&
-    movie.id
+    movie.watched !== undefined 
   );
 }
 
