@@ -1,5 +1,6 @@
 const config = require("./lib/config");
 const express = require("express");
+const path = require("path");
 const morgan = require("morgan");
 const session = require("express-session");
 const store = require("connect-loki");
@@ -14,7 +15,7 @@ const LokiStore = store(session);
 
 app.use(morgan("common"));
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
   cookie: {
@@ -66,12 +67,12 @@ app.get("/", (req, res) => {
 
 // Sends HTML for a signed in user's homepage
 app.get("/movies", requiresAuthentication, (req, res) => {
-  res.sendFile("index.html");
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Sends HTML for the sign in page
 app.get("/signin", (req, res) => {
-  res.sendFile("sign-in.html");
+  res.sendFile(path.join(__dirname, 'public', 'sign-in.html'));
 });
 
 // Handles first time sign up requests
