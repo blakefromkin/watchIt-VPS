@@ -99,10 +99,19 @@ class Model {
   getMovieById(id) {
     return this.allMovies.find(movie => id === String(movie.id));
   }
+
+  // Request a sign out 
+  async signOut() {
+    try {
+      await fetch("/signout");
+    } catch(err) {
+      throw(err);
+    }
+  }
 }
 
 class View {
-  constructor() {
+  constructor() { 
     this.nav = document.querySelector("nav");
     this.allMoviesDiv = document.getElementById("all-movies");
     this.allMoviesTitle = document.getElementById("all-movies-title");
@@ -115,6 +124,7 @@ class View {
     this.movieListDiv = document.getElementById("movie-list");
     this.modalPageDiv = document.getElementById("modal-page");
     this.addMovieAnchor = document.getElementById("add-movie");
+    this.signOutButton = document.getElementById("sign-out-button");
 
     this.title = document.getElementById("title");
     this.yearSelect = document.getElementById("year");
@@ -612,6 +622,15 @@ class Controller {
 
     this.view.renderNavAllMovies(this.model.genres);
     this.view.renderNavWatchedMovies(this.model.watchedGenres);
+  }
+
+  // Handle sign out button click
+  bindSignOutHandler() {
+    this.view.signOutButton.addEventListener("click", async e => {
+      if (window.confirm("Are you sure you want to sign out?")) {
+        await this.model.signOut();
+      }
+    });
   }
 }
 
