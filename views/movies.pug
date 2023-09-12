@@ -12,18 +12,19 @@ block content
   #flex-container
     nav
       #all-movies
-        h1#all-movies-title.selected All Movies
-        span.count#all-count
+        #all-movies-header.selected
+          h1#all-movies-title All Movies
+          span.count#all-count
       #watched-movies
-        h1#watched-movies-title Watched Movies
-        span.count#watched-count
+        #watched-movies-header
+          h1#watched-movies-title Watched Movies
+          span.count#watched-count
 
     main
       #genre-title
-        h1
-          span#title-text All Movies
-          span.count#title-count
-      a(href="", id="add-movie") + Add new movie
+        h1#title-text All Movies
+        span.count#title-count
+        a(href="", id="add-movie") + Add new movie
       
       #movie-list
 
@@ -33,10 +34,10 @@ block content
       input(type="text", name="title", id="title", placeholder="Ex: Titanic")
       br
 
-      label(for="year") Details
+      label(for="year") Year
       select(name="year", id="year")
         option(value="", selected) Year
-      label(for="genre") /
+      label(for="genre") Genre
       select(name="genre", id="genre")
         option(value="", selected) Genre
       br

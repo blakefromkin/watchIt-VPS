@@ -105,9 +105,11 @@ class View {
   constructor() { 
     this.nav = document.querySelector("nav");
     this.allMoviesDiv = document.getElementById("all-movies");
+    this.allMoviesHeader = document.getElementById("all-movies-header");
     this.allMoviesTitle = document.getElementById("all-movies-title");
     this.allMoviesCount = document.getElementById("all-count");
     this.watchedMoviesDiv = document.getElementById("watched-movies");
+    this.watchedMoviesHeader = document.getElementById("watched-movies-header");
     this.watchedMoviesTitle = document.getElementById("watched-movies-title");
     this.watchedMoviesCount = document.getElementById("watched-count");
     this.titleText = document.getElementById("title-text");
@@ -229,7 +231,7 @@ class View {
       let watchedClass = mov.watched ? "watched" : "";
       this.movieListDiv.innerHTML += 
         `<li data-genre="${mov.genre}" data-movieid="${mov.id}" class="movie ${watchedClass}">` +
-          `<p>${mov.title} (${mov.year})</p>` +
+          `<p>${mov.title} (${mov.year || "N/A"})</p>` +
           `<img src="/images/trash-can.png"/ class="trash">` +
         `</li>`;
     });
@@ -270,7 +272,7 @@ class Controller {
     this.currentMovieId = null;
     this.currentListId = "all";
     this.watchedListSelected = false;
-    this.currentNavSelect = this.view.allMoviesTitle; // Initially select "All Movies" from the nav
+    this.currentNavSelect = this.view.allMoviesHeader; // Initially select "All Movies" from the nav
   
     this.populateNav();
     this.renderAllMoviesList();
@@ -300,36 +302,48 @@ class Controller {
 
   // Render movie list and update controller variables when nav element clicked
   navClicksHandler(e) {
-    if (e.target.classList.contains("all-item-text")) { // Genre under "All Movies" clicked
-      let genre = e.target.parentNode.getAttribute("data-genre");
+    if (e.target.classList.contains("all-item-text") || 
+          e.target.matches("#all-list span")) { // Genre under "All Movies" clicked
+      let target = e.target;
+      while (!target.matches("#all-list") && target.tagName !== 'LI') {
+        target = target.parentNode;
+      }
+      let genre = target.getAttribute("data-genre");
       this.renderAllGenreList(genre);
       this.view.updateTitleText(genre);
       this.currentListId = genre;
       this.watchedListSelected = false;
       this.updateTitleCount();
-      this.updateSelectedElement(this.currentNavSelect, e.target.parentNode);
-    } else if (e.target.classList.contains("watched-item-text")) {  // Genre under "Watched Movies" clicked
-      let genre = e.target.parentNode.getAttribute("data-genre");
+      this.updateSelectedElement(this.currentNavSelect, target);
+    } else if (e.target.classList.contains("watched-item-text") || 
+                e.target.matches("#watched-list span")) {  // Genre under "Watched Movies" clicked
+      let target = e.target;
+      while (!target.matches("#watched-list") && target.tagName !== 'LI') {
+        target = target.parentNode;
+      }
+      let genre = target.getAttribute("data-genre");
       this.renderWatchedGenreList(genre);
       this.view.updateTitleText(genre);
       this.currentListId = genre;
       this.watchedListSelected = true;
       this.updateTitleCount();
-      this.updateSelectedElement(this.currentNavSelect, e.target.parentNode);
-    } else if (e.target === this.view.allMoviesTitle) { // "All Movies" clicked
+      this.updateSelectedElement(this.currentNavSelect, target);
+    } else if (e.target === this.view.allMoviesTitle || e.target === this.view.allMoviesHeader ||
+                e.target.matches("#all-movies-header span")) { // "All Movies" clicked
       this.renderAllMoviesList();
       this.view.updateTitleText("All Movies");
       this.currentListId = "all";
       this.watchedListSelected = false;
       this.updateTitleCount();
-      this.updateSelectedElement(this.currentNavSelect, e.target);
-    } else if (e.target === this.view.watchedMoviesTitle) { // "Watched Movies" clicked
+      this.updateSelectedElement(this.currentNavSelect, this.view.allMoviesHeader);
+    } else if (e.target === this.view.watchedMoviesTitle || e.target === this.view.watchedMoviesHeader ||
+                e.target.matches("#watched-movies-header span")) { // "Watched Movies" clicked
       this.renderWatchedMoviesList();
       this.view.updateTitleText("Watched Movies");
       this.currentListId = "watched";
       this.watchedListSelected = true;
       this.updateTitleCount();
-      this.updateSelectedElement(this.currentNavSelect, e.target);
+      this.updateSelectedElement(this.currentNavSelect, this.view.watchedMoviesHeader);
     }
   }
 
@@ -476,7 +490,7 @@ class Controller {
         this.populateNav();
         this.updateTitleCount();
         this.view.updateTitleText("All Movies");
-        this.updateSelectedElement(this.currentNavSelect, this.view.allMoviesTitle);
+        this.updateSelectedElement(this.currentNavSelect, this.view.allMoviesHeader);
       } else {                      // Submit edited movie
         await this.submitEditedMovie();
         this.currentMovieId = null;

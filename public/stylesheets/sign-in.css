@@ -40,6 +40,8 @@ input {
 
 .btn {
   display: inline-block;
+  margin-right: 30px;
+  margin-left: 20px;
   margin-top: 10px;
   padding: 10px 20px;
   background-color: #007bff;
@@ -47,4 +49,8 @@ input {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+#password, #username {
+  box-sizing: border-box;
 }
