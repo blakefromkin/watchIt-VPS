@@ -121,7 +121,15 @@ main {
 
 a#add-movie {
   color: #00B7FF;
-  padding-left: 20px;
+  margin-left: 20px;
+  padding: 5px;
+  border: 1px solid #00B7FF;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+a#add-movie:hover {
+  background-color: #00b7ff10;
 }
 
 .hidden {
@@ -207,7 +215,7 @@ nav li {
 }
 
 nav li:not(.selected):hover, #all-movies-header:not(.selected):hover, #watched-movies-header:not(.selected):hover {
-  background-color: #2c325183;
+  background-color: #2c325169;
 }
 
 #all-movies, #watched-movies {

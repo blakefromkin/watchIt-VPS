@@ -143,7 +143,7 @@ class View {
 
    // Populate the options in the modal's select elements
    populateFormSelects() {
-    const genres = ['Comedy', 'Drama', 'Thriller', 'Family', 'Sci-Fi', 'Adventure',
+    const genres = ['Comedy', 'Drama', 'Thriller', 'Family', 'Sci-Fi', 'Superhero',
                     'Historical', 'Romance', 'Action', 'Documentary', 'Animated', 'Western'];
 
     let genreHTML = '';

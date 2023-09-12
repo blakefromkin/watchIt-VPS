@@ -1,5 +1,5 @@
 body {
-  font-family: Arial, sans-serif;
+  font: 14px "Roboto Mono", monospace;
   background-color: #f4f4f4;
   margin: 0;
   padding: 0;
@@ -41,7 +41,6 @@ input {
 .btn {
   display: inline-block;
   margin-right: 30px;
-  margin-left: 20px;
   margin-top: 10px;
   padding: 10px 20px;
   background-color: #007bff;
@@ -51,6 +50,38 @@ input {
   cursor: pointer;
 }
 
+.btn:hover {
+  background-color: #00B7FF;
+}
+
 #password, #username {
   box-sizing: border-box;
+}
+
+.flash.error {
+  list-style-type: none;
+  background-color: rgba(255, 0, 0, 0.51);
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.flash.success {
+  list-style-type: none;
+  background-color: rgba(0, 255, 0, 0.51);
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+header {
+  background-color: #4A90E2; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#site-title {
+  font-family: 'Press Start 2P', 'Lucida Grande', Helvetica, Arial, sans-serif;
+  color: white;
 }
