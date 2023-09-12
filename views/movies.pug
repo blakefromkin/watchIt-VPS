@@ -1,0 +1,49 @@
+extends layout
+
+block scriptsAndLinks
+  link(rel="stylesheet" href="/stylesheets/movies.css")
+  script(src="/javascripts/app.js")
+
+block signOut
+  form(action="/signout" method="post")#sign-out-form
+    input(type="submit" value="Sign Out")#sign-out-button
+
+block content 
+  #flex-container
+    nav
+      #all-movies
+        h1#all-movies-title.selected All Movies
+        span.count#all-count
+      #watched-movies
+        h1#watched-movies-title Watched Movies
+        span.count#watched-count
+
+    main
+      #genre-title
+        h1
+          span#title-text All Movies
+          span.count#title-count
+      a(href="", id="add-movie") + Add new movie
+      
+      #movie-list
+
+  #modal-page.hidden
+    form#modal(action="", method="post")
+      label(for="title") Title
+      input(type="text", name="title", id="title", placeholder="Ex: Titanic")
+      br
+
+      label(for="year") Details
+      select(name="year", id="year")
+        option(value="", selected) Year
+      label(for="genre") /
+      select(name="genre", id="genre")
+        option(value="", selected) Genre
+      br
+
+      label(for="notes") Notes
+      textarea(name="notes", id="notes", placeholder="Enter notes here.")
+      br
+
+      button(type="button", class="modal-button", id="save") Save
+      button(type="button", class="modal-button", id="mark-watched") Mark As Watched

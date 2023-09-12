@@ -1,0 +1,23 @@
+doctype html
+html(lang="en")
+  head
+    title WatchIt
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible" content="ie=edge")
+    block scriptsAndLinks
+
+  body
+    header
+      h1#site-title WatchIt
+      block signOut 
+      #flashDiv 
+        - let kinds = Object.keys(flash || {});
+        if kinds.length > 0
+          ul
+            each kind in kinds
+              each message in flash[kind]
+                li.flash(class=kind)= message
+    
+    block content
+    

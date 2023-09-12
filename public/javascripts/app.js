@@ -24,7 +24,7 @@ class Model {
   async refreshUsername() {
     try {
       let response = await fetch("/user");
-      this.username = response.body;
+      this.username = await response.text();
     } catch(err) {
       throw(err);
     }
@@ -99,15 +99,6 @@ class Model {
   getMovieById(id) {
     return this.allMovies.find(movie => id === String(movie.id));
   }
-
-  // Request a sign out 
-  async signOut() {
-    try {
-      await fetch("/signout");
-    } catch(err) {
-      throw(err);
-    }
-  }
 }
 
 class View {
@@ -124,6 +115,8 @@ class View {
     this.movieListDiv = document.getElementById("movie-list");
     this.modalPageDiv = document.getElementById("modal-page");
     this.addMovieAnchor = document.getElementById("add-movie");
+
+    this.signOutForm = document.getElementById("sign-out-form");
     this.signOutButton = document.getElementById("sign-out-button");
 
     this.title = document.getElementById("title");
@@ -132,8 +125,6 @@ class View {
     this.notes = document.getElementById("notes");
     this.saveButton = document.getElementById("save");
     this.markWatchedButton = document.getElementById("mark-watched");
-
-    this.movieListTemplate = Handlebars.compile(document.getElementById("movieListTemplate").innerHTML);
 
     this.populateFormSelects();
   }
@@ -159,11 +150,11 @@ class View {
     genres.forEach(genre => {
       genreHTML += `<option value="${genre}">${genre}</option>`;
     });
-    for (let count = 1920; count <= new Date().getFullYear(); count += 1) {
+    for (let count = new Date().getFullYear(); count >= 1920; count -= 1) {
       yearHTML += `<option value="${count}">${count}</option>`;
     }
 
-    this.genreSelect.innerHTML += dayHTML;
+    this.genreSelect.innerHTML += genreHTML;
     this.yearSelect.innerHTML += yearHTML;
   }
 
@@ -222,29 +213,27 @@ class View {
     this.watchedMoviesDiv.insertAdjacentHTML("beforeend", html);
   }
 
-  // Prepare the data to pass to the movie list template, sort the movies by watched status, 
-  // And render the template
+  // Sort movies by watched status and render the movie list
   renderMovieList(dataObj) {
-    if (dataObj.movies.length === 0) {
-      this.movieListDiv.innerHTML = '';
-    } else {
-      dataObj.movies.sort((movieA, movieB) => {
-        if (movieA.watched && !movieB.watched) return 1;
-        if (movieB.watched && !movieA.watched) return -1;
-        return 0;
-      });
+    this.movieListDiv.innerHTML = '';
+    if (dataObj.movies.length === 0) return;
 
-      dataObj.movies = dataObj.movies.map(movie => {
-        if (!movie.watched) {
-          movie.watched = "";
-          return movie;
-        } else {
-          movie.watched = "watched";
-          return movie;
-        }
-      });
-      this.movieListDiv.innerHTML = this.movieListTemplate(dataObj);
-    }
+    dataObj.movies.sort((movieA, movieB) => {
+      if (movieA.watched && !movieB.watched) return 1;
+      if (movieB.watched && !movieA.watched) return -1;
+      return 0;
+    });
+
+    this.movieListDiv.innerHTML = '<ul>'
+    dataObj.movies = dataObj.movies.forEach(mov => {
+      let watchedClass = mov.watched ? "watched" : "";
+      this.movieListDiv.innerHTML += 
+        `<li data-genre="${mov.genre}" data-movieid="${mov.id}" class="movie ${watchedClass}">` +
+          `<p>${mov.title} (${mov.year})</p>` +
+          `<img src="/images/trash-can.png"/ class="trash">` +
+        `</li>`;
+    });
+    this.movieListDiv.innerHTML += '<ul>';
   }
 
   // Render the genre title of the current movie list
@@ -300,6 +289,7 @@ class Controller {
     this.bindExitFormHandler();
     this.bindSaveHandler();
     this.bindMarkWatchedHandler();
+    this.bindSignOutHandler();
   }
 
    // Update selected nav element and store element in this.currentNavSelect
@@ -624,11 +614,11 @@ class Controller {
     this.view.renderNavWatchedMovies(this.model.watchedGenres);
   }
 
-  // Handle sign out button click
+  // Handle sign out button click and loading sign in page
   bindSignOutHandler() {
     this.view.signOutButton.addEventListener("click", async e => {
-      if (window.confirm("Are you sure you want to sign out?")) {
-        await this.model.signOut();
+      if (!window.confirm("Are you sure you want to sign out?")) {
+        e.preventDefault();
       }
     });
   }
