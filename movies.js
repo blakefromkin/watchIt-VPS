@@ -77,7 +77,7 @@ app.get("/", (req, res) => {
 
 // Renders signed in user's homepage
 app.get("/movies", requiresAuthentication, (req, res) => {
-  res.render("movies", {flash: req.flash()});
+  res.render("movies");
 });
 
 // Renders sign in page
@@ -92,7 +92,6 @@ app.post("/signup", catchError(async (req, res) => {
   if (signedUp) {
     req.session.username = username.toLowerCase();
     req.session.signedIn = true;
-    req.flash("success", "Welcome!");
     res.redirect("/movies");
   } else {
     req.flash("error", "Username already exists.");
@@ -110,7 +109,6 @@ app.post("/signin", catchError(async (req, res) => {
   if (valid) {
     req.session.username = username.toLowerCase();
     req.session.signedIn = true;
-    req.flash("success", "Welcome!");
     res.redirect("/movies");
   } else {
     req.flash("error", "Invalid Credentials.");
