@@ -8,7 +8,8 @@
   },
   "scripts": {
     "heroku-postbuild": "npm install --production",
-    "start": "npx nodemon movies.js"
+    "start": "node movies.js",
+    "dev": "npx nodemon movies.js"
   },
   "author": "",
   "license": "ISC",
