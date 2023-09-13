@@ -60,4 +60,5 @@ To update the information for an existing movie, simply click on that movie's ti
 These are obvious--click the "Add New Movie" and trash can buttons respectively. 
 
 ## Future Implementation
-I would like to implement interaction with a movie database API like IMDB's in order to source validated movie data, rather than having users manually input their own.
+- Implement interaction with a movie database API like IMDB's in order to source validated movie data, rather than having users manually input their own.
+- Display flash messages for successful movie additions, edits, and deletions
