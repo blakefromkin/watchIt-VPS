@@ -1,5 +1,5 @@
 # WatchIt
-WatchIt is a full stack application that lets users keep track of movies they've watched or want to watch in the future. 
+[WatchIt](https://powerful-depths-70402-7dc6da54e08a.herokuapp.com/) is a full stack application that lets users keep track of movies they've watched or want to watch in the future. 
 
 I built this app to practice my full stack skills--and because my girlfriend was tired of me asking her for reminders to watch *Everything, Everywhere, All At Once*. 
 
