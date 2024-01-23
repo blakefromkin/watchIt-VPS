@@ -32,7 +32,7 @@ app.use(session({
   saveUninitialized: true,
   secret: config.SECRET,
   store: MongoStore.create({ 
-    mongoUrl: 'mongodb://localhost:27017/sessionDB',
+    mongoUrl: 'mongodb://127.0.0.1:27017/sessionDB',
     collection: 'sessions'
   }),
 }));
