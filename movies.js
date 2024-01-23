@@ -4,7 +4,7 @@ const path = require("path");
 const morgan = require("morgan");
 const flash = require("express-flash");
 const session = require("express-session");
-const store = require("connect-loki");
+const MongoStore = require("connect-mongo");
 const PgPersistence = require("./lib/pg-persistence");
 const catchError = require("./lib/catch-error");
 const requiresAuthentication = require("./lib/requires-authentication");
@@ -12,7 +12,6 @@ const requiresAuthentication = require("./lib/requires-authentication");
 const app = express();
 const host = config.HOST;
 const port = config.PORT;
-const LokiStore = store(session);
 
 app.set("views", "./views");
 app.set("view engine", "pug");
@@ -26,13 +25,16 @@ app.use(session({
     httpOnly: true,
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     path: "/",
-    secure: false,
+    secure: true,
   },
   name: "movie-app",
   resave: false,
   saveUninitialized: true,
   secret: config.SECRET,
-  store: new LokiStore({}),
+  store: MongoStore.create({ 
+    mongoUrl: 'mongodb://localhost:27017/sessionDB',
+    collection: 'sessions'
+  }),
 }));
 
 app.use(flash());
