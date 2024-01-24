@@ -94,7 +94,15 @@ app.post("/signup", catchError(async (req, res) => {
   if (signedUp) {
     req.session.username = username.toLowerCase();
     req.session.signedIn = true;
-    res.redirect("/movies");
+    req.session.save((err) => {
+      if (err) {
+        // Handle error
+        console.error(err);
+        res.status(500).send("An error occurred while saving the session.");
+      } else {
+        res.redirect("/movies");
+      }
+    });
   } else {
     req.flash("error", "Username already exists.");
     res.render("signin", {
@@ -111,7 +119,15 @@ app.post("/signin", catchError(async (req, res) => {
   if (valid) {
     req.session.username = username.toLowerCase();
     req.session.signedIn = true;
-    res.redirect("/movies");
+    req.session.save((err) => {
+      if (err) {
+        // Handle error
+        console.error(err);
+        res.status(500).send("An error occurred while saving the session.");
+      } else {
+        res.redirect("/movies");
+      }
+    });
   } else {
     req.flash("error", "Invalid Credentials.");
     res.render("signin", {
@@ -127,8 +143,16 @@ app.post("/signout", (req, res) => {
   delete req.session.signedIn;
   res.locals.username = null;
   res.locals.signedIn = false;
-  req.flash("success", "Signed out.");
-  res.render("signin", {flash: req.flash()});
+  req.session.destroy((err) => {
+    if (err) {
+      // Handle error
+      console.error(err);
+      res.status(500).send("An error occurred while destroying the session.");
+    } else {
+      req.flash("success", "Signed out.");
+      res.render("signin", {flash: req.flash()});
+    }
+  });
 });
 
 // Sends current username string
