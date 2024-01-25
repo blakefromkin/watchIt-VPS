@@ -39,7 +39,7 @@ app.use(session({
 
 app.use(flash());
 
-// Create a new datastore on res.locals
+// Create a new datastore on res.locals 
 app.use((req, res, next) => {
   res.locals.store = new PgPersistence(req.session);
   next();
