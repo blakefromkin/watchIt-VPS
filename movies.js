@@ -82,7 +82,7 @@ app.get("/movies", requiresAuthentication, (req, res) => {
   res.render("movies");
 });
 
-// Renders sign in page
+// Renders sign in page.
 app.get("/signin", (req, res) => {
   res.render("signin", {flash: req.flash()});
 });
